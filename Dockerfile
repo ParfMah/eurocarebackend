@@ -5,15 +5,16 @@ FROM php:8.2-apache-bullseye
 # Récupération de l'installateur d'extensions
 COPY --from=installer /usr/bin/install-php-extensions /usr/bin/
 
-# Installation immédiate des extensions sans passer par les dépôts apt-get globaux
+# Installation immédiate des extensions
 RUN install-php-extensions pdo pdo_mysql mbstring gd fileinfo
 
 # Configuration du DocumentRoot vers public/
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
     && sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/apache2.conf
 
-# Activation des modules Apache requis
-RUN a2enmod rewrite headers expires deflate
+# CORRECTION DU CONFLIT : Désactivation du MPM Event et activation des modules requis
+RUN a2dismod mpm_event \
+    && a2enmod mpm_prefork rewrite headers expires deflate
 
 # Copier les fichiers du projet
 COPY . /var/www/html/
