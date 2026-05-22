@@ -1,0 +1,125 @@
+# =====================================================
+# EUROCARE HUMANITAIRE - Configuration Apache
+# =====================================================
+# Fichier : public/.htaccess
+# Description : Réécriture d'URL propres (front controller),
+#   protection des dossiers sensibles, sécurité HTTP,
+#   compression GZIP et cache navigateur.
+# =====================================================
+
+Options -Indexes -ExecCGI
+Options +FollowSymLinks
+
+# =====================================================
+# MODULE DE RÉÉCRITURE D'URL
+# =====================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # --- Bloquer les fichiers cachés (.git, .env, etc.) ---
+    RewriteRule ^\.                         - [F,L]
+    RewriteRule (^|/)\.                     - [F,L]
+
+    # --- Bloquer l'accès aux dossiers sensibles ---
+    RewriteRule ^app/                       - [F,L]
+    RewriteRule ^storage/                   - [F,L]
+    RewriteRule ^database/                  - [F,L]
+    RewriteRule ^vendor/                    - [F,L]
+
+    # --- Autoriser les fichiers et dossiers existants ---
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # --- Rediriger tout vers index.php ---
+    RewriteRule ^ index.php [L,QSA]
+</IfModule>
+
+# =====================================================
+# EN-TÊTES DE SÉCURITÉ HTTP
+# =====================================================
+<IfModule mod_headers.c>
+    # Anti-clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Protection XSS navigateur
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # Pas de sniffing MIME
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Politique de référent
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Permissions navigateur (désactive les APIs non nécessaires)
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+    # Suppression de la signature serveur
+    Header unset X-Powered-By
+    Header unset Server
+</IfModule>
+
+# =====================================================
+# COMPRESSION GZIP (performances)
+# =====================================================
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE text/xml application/xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE font/ttf font/otf font/woff font/woff2
+</IfModule>
+
+# =====================================================
+# CACHE NAVIGATEUR (performances)
+# =====================================================
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/html               "access plus 1 hour"
+    ExpiresByType text/css                "access plus 1 month"
+    ExpiresByType application/javascript  "access plus 1 month"
+    ExpiresByType image/jpeg              "access plus 6 months"
+    ExpiresByType image/png               "access plus 6 months"
+    ExpiresByType image/gif               "access plus 6 months"
+    ExpiresByType image/webp              "access plus 6 months"
+    ExpiresByType image/svg+xml          "access plus 6 months"
+    ExpiresByType font/woff2              "access plus 1 year"
+    ExpiresByType font/woff               "access plus 1 year"
+</IfModule>
+
+# =====================================================
+# PROTECTION DES FICHIERS SENSIBLES
+# =====================================================
+<FilesMatch "\.(sql|env|log|config\.php|ini|bak|sh)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# =====================================================
+# PAGE D'ERREUR PERSONNALISÉE
+# =====================================================
+ErrorDocument 404 /index.php
+ErrorDocument 500 /index.php
+ErrorDocument 403 /index.php
+
+# =====================================================
+# TAILLE MAX DES UPLOADS
+# =====================================================
+<IfModule mod_php.c>
+    php_value upload_max_filesize  10M
+    php_value post_max_size        12M
+    php_value max_execution_time   60
+    php_value max_input_vars       3000
+    php_value memory_limit         256M
+</IfModule>
+
+# =====================================================
+# ENCODAGE UTF-8
+# =====================================================
+AddDefaultCharset UTF-8

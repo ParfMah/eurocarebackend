@@ -1,0 +1,267 @@
+/* =====================================================
+   EUROCARE HUMANITAIRE — CSS Dashboards Utilisateurs
+   Fichier : public/assets/css/dashboard.css
+   ===================================================== */
+
+/* =====================================================
+   LAYOUT DASHBOARD UTILISATEUR
+   ===================================================== */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 0;
+  min-height: calc(100vh - 70px);
+  background: var(--color-gray-50);
+}
+
+.dashboard-sidebar {
+  background: white;
+  border-right: 1px solid var(--color-gray-200);
+  padding: var(--space-6) var(--space-4);
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+}
+
+.dashboard-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+
+.dashboard-nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-gray-700);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+.dashboard-nav-link:hover { background: var(--color-blue-pale); color: var(--color-blue-mid); text-decoration: none; }
+.dashboard-nav-link.active { background: var(--color-blue-pale); color: var(--color-blue-mid); font-weight: var(--font-semibold); }
+.dashboard-nav-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+.dashboard-nav-section {
+  font-size: 10px;
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--color-gray-400);
+  padding: var(--space-4) var(--space-4) var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.dashboard-main {
+  padding: var(--space-8);
+  min-width: 0;
+}
+
+.dashboard-page-header {
+  margin-bottom: var(--space-6);
+}
+
+.dashboard-page-header h1 {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--color-gray-900);
+  letter-spacing: -0.02em;
+}
+
+.dashboard-page-header p {
+  font-size: var(--text-sm);
+  color: var(--color-gray-500);
+  margin-top: var(--space-1);
+}
+
+@media (max-width: 1024px) {
+  .dashboard-layout { grid-template-columns: 1fr; }
+  .dashboard-sidebar { display: none; }
+}
+
+/* =====================================================
+   CARTE STATUT DOSSIER
+   ===================================================== */
+.dossier-status-card {
+  background: white;
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-gray-100);
+  margin-bottom: var(--space-6);
+  position: relative;
+  overflow: hidden;
+}
+
+.dossier-status-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--status-color, var(--color-gray-400));
+}
+
+/* =====================================================
+   UPLOAD ZONE
+   ===================================================== */
+.drop-zone {
+  border: 2px dashed var(--color-gray-300);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background: var(--color-gray-50);
+}
+
+.drop-zone:hover, .drop-zone.drag-over {
+  border-color: var(--color-blue-mid);
+  background: var(--color-blue-pale);
+}
+
+.drop-zone-icon { font-size: 2.5rem; margin-bottom: var(--space-3); }
+.drop-zone-text { font-size: var(--text-sm); color: var(--color-gray-600); }
+.drop-zone-sub  { font-size: var(--text-xs); color: var(--color-gray-400); margin-top: var(--space-1); }
+
+/* =====================================================
+   LISTE DE DOCUMENTS
+   ===================================================== */
+.document-list { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.document-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: white;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-gray-100);
+  transition: all var(--transition-fast);
+}
+
+.document-item:hover { border-color: var(--color-blue-border); box-shadow: var(--shadow-sm); }
+
+.document-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-blue-pale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.document-name  { font-weight: var(--font-medium); font-size: var(--text-sm); }
+.document-meta  { font-size: var(--text-xs); color: var(--color-gray-500); margin-top: 2px; }
+
+/* =====================================================
+   TIMELINE D'AIDE
+   ===================================================== */
+.aide-timeline { display: flex; flex-direction: column; gap: 0; position: relative; }
+.aide-timeline::before {
+  content: '';
+  position: absolute;
+  left: 1.25rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-gray-200);
+}
+
+.aide-timeline-item {
+  display: flex;
+  gap: var(--space-4);
+  padding-bottom: var(--space-5);
+  position: relative;
+}
+
+.aide-timeline-dot {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1rem;
+  z-index: 1;
+  border: 2px solid white;
+}
+
+.aide-timeline-content {
+  flex: 1;
+  background: white;
+  border: 1px solid var(--color-gray-100);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+}
+
+.aide-timeline-title { font-weight: var(--font-semibold); font-size: var(--text-sm); }
+.aide-timeline-date  { font-size: var(--text-xs); color: var(--color-gray-500); }
+.aide-timeline-desc  { font-size: var(--text-sm); color: var(--color-gray-600); margin-top: var(--space-2); line-height: var(--line-relaxed); }
+
+/* =====================================================
+   MESSAGERIE
+   ===================================================== */
+.messages-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 0;
+  height: 600px;
+  background: white;
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--color-gray-200);
+  overflow: hidden;
+}
+
+.messages-list {
+  border-right: 1px solid var(--color-gray-100);
+  overflow-y: auto;
+}
+
+.message-item {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-gray-50);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.message-item:hover    { background: var(--color-blue-pale); }
+.message-item.active   { background: var(--color-blue-pale); border-left: 3px solid var(--color-blue-mid); }
+.message-item.unread   { background: #fafbff; }
+
+.message-item-subject  { font-weight: var(--font-semibold); font-size: var(--text-sm); margin-bottom: 2px; }
+.message-item-preview  { font-size: var(--text-xs); color: var(--color-gray-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.message-item-date     { font-size: 10px; color: var(--color-gray-400); float: right; }
+
+.message-view {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.message-view-header {
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.message-view-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--color-gray-700);
+  line-height: var(--line-relaxed);
+}
+
+/* =====================================================
+   RESPONSIVE DASHBOARD
+   ===================================================== */
+@media (max-width: 768px) {
+  .dashboard-main { padding: var(--space-4); }
+  .messages-layout { grid-template-columns: 1fr; height: auto; }
+  .messages-list   { height: 250px; border-right: none; border-bottom: 1px solid var(--color-gray-100); }
+}

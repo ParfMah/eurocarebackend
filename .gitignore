@@ -1,0 +1,13 @@
+.env
+storage/logs/*.log
+storage/cache/*.json
+public/assets/uploads/profils/*
+public/assets/uploads/documents/*
+public/assets/uploads/articles/*
+public/assets/uploads/projets/*
+public/assets/uploads/partenaires/*
+public/assets/uploads/temoignages/*
+!public/assets/uploads/**/.gitkeep
+vendor/
+*.DS_Store
+Thumbs.db
